@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Response Generator</title>
+    <style>
+        /* General Styles */
+        body {
+            background-color: #121212; /* Dark background */
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container for the entire content */
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        /* Header */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        /* Input and Button Container */
+        .input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* Text Box */
+        .input-box {
+            padding: 10px;
+            width: 60%;
+            margin-right: 10px;
+            border-radius: 10px;
+            border: 2px solid white;
+            background-color: #1e1e1e;
+            color: white;
+            font-size: 1rem;
+        }
+
+        /* Enter Button */
+        .enter-btn {
+            padding: 10px 15px;
+            border-radius: 10px;
+            background-color: #4caf50;
+            color: white;
+            border: 2px solid white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Hover effect for the button */
+        .enter-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Response Area */
+        .response-area {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        /* Code Block Styling */
+        pre {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: lightgray;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chat with Me</h1>
+        <div class="input-container">
+            <input type="text" id="userInput" class="input-box" placeholder="Type something...">
+            <button id="enterButton" class="enter-btn">Enter</button>
+        </div>
+        <div id="responseArea" class="response-area"></div>
+    </div>
+
+    <script>
+        // Event listener for the Enter button
+        document.getElementById('enterButton').addEventListener('click', function() {
+            // Get user input
+            let userInput = document.getElementById('userInput').value.trim();
+            let responseArea = document.getElementById('responseArea');
+
+            // If input is empty, return early
+            if (userInput === "") {
+                return;
+            }
+
+            // Display the user input in the response area
+            let userTextElement = document.createElement('p');
+            userTextElement.textContent = `You said: ${userInput}`;
+            responseArea.appendChild(userTextElement);
+
+            // Simulate a response from a bot
+            let botResponse = generateResponse(userInput);
+
+            // Create and display the bot response
+            let botTextElement = document.createElement('p');
+            botTextElement.textContent = `Bot says: ${botResponse}`;
+            responseArea.appendChild(botTextElement);
+
+            // Scroll to the bottom of the response area
+            responseArea.scrollTop = responseArea.scrollHeight;
+
+            // Clear the input box after submission
+            document.getElementById('userInput').value = '';
+        });
+
+        // Function to generate a response (could be enhanced for real AI-based response)
+        function generateResponse(input) {
+            // Check if input contains code (e.g., includes triple backticks)
+            if (input.includes('```')) {
+                // Extract code (basic way to extract code between triple backticks)
+                let code = input.match(/```(.*?)```/s);
+                if (code) {
+                    return `<pre>${code[1]}</pre>`;
+                }
+            }
+
+            // Default response
+            let responses = [
+                "That's interesting!",
+                "Could you tell me more?",
+                "I don't fully understand, but I'm learning!",
+                "Here's some random text: You mentioned, '" + input + "'",
+                "Did you mean to include some code? Check this out: ```" + input + "```"
+            ];
+
+            // Return a random response from the array
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+    </script>
+</body>
+</html>
